@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="shortcut icon" href="./favicon.png">
+    <title>Search - MagicPredict</title>
+</head>
+<body style="background-color: black;">
+    <div class="navbar">
+        <button class="btninput desktop-only" onclick="redirect('/')" style="position: absolute; height: 150px; width: 170px;"><img src="/static/back.png" style="width: 100px; position: absolute; top: 45px; left: 30px; mix-blend-mode: difference;"></button>
+        <img src="/static/logo.png" style="width: 250px; margin: auto;">
+    </div>
+
+    <div class="mid">
+        <div class="notifybar firstboot desktop-only" data-aos="zoom-out">
+            <div class="accent"></div>
+            <div class="yo desktop-only"><h1>YO!</h1></div>
+            <div class="notifytext"><p>Thanks for checking out MagicPredict by SamarthCat! On this site, you'll be able to see current player data and future predictions for player data! Keep in mind that this website only uses games from Steam, so other popular games won't be here unfortunately.</p></div>
+        </div>
+
+        <div id="theme-notify" style="display: none;" data-aos="zoom-out">
+            <div class="notifybar">
+                <div class="accent"></div>
+                <div class="yo desktop-only" style="height: 225px;"><h1>YO!</h1></div>
+                <div class="notifytext" id="themetext"><p>The system has detected that your device is using the THEME theme, you can change it to -THEME if you want.</p></div>
+            </div>
+            <div class="notifybar" style="margin-top: 0px; height: 75px;">
+                <div class="accent"></div>
+                <div class="yo desktop-only"><h1></h1></div>
+                <div class="notifytext"><button class="btninput" style="margin-bottom: 70px;" onclick="switchTheme()">Switch Theme</button></div>
+            </div>
+        </div>
+
+        <div class="search">
+            <div class="searchbar" data-aos="zoom-out">
+                <input id="searchinput" autocomplete="off" oninput="onSearchChange(this)" type="text" class="txtinput" style="width: 100%;display: flex;" placeholder="Search for games...">
+                <button onclick=" if (sanitize(document.getElementById('searchinput').value) != '') { redirect('/search?query=' + sanitize(document.getElementById('searchinput').value)); }" class="searchbutton btninput" style="width: 50px; margin-right: 0; display: flex;">
+                    <img src="static/search.png" style="mix-blend-mode: difference; margin: auto;" width="30px" height="30px">
+                </button>
+            </div>
+            <div class="hits" style="position:static; display: flex; z-index: 100; width: 100%; flex-direction: column;"></div>
+        </div>
+
+        <h1 data-aos="zoom-out" id="searchtime">SEARCH TIME</h1>
+
+    <div class="resultcontainer" style="width: 100%; display: grid; grid-template-columns: auto auto auto; margin-top: 75px;">
+        
+    </div>
+
+    </div>
+
+    <br><br><br>
+    <br><br><br>
+
+    <div class="footer-basic">
+        <footer>
+            <img src="/static/PartyWordmarkIcon.png" style="width: 300px; margin: auto; display: flex;">
+            <br>
+            <div class="social"><a href="https://samsidparty.com/redirect.html?link=Https://discord.com/invite/9pquRQPsFD"><img class="icon" src="https://samsidparty.com/Discord.png"></img></a><a href="https://samsidparty.com/redirect.html?link=https://www.youtube.com/channel/UCwQqQAKagWr2LSOLmlZFMUg?sub_confirmation=1"><img class="icon" src="https://samsidparty.com/Youtube.png"></img></a><a href="https://samsidparty.com/redirect.html?link=Https://github.com/SamarthCat"><img class="icon" src="https://samsidparty.com/Github.png"></img></a></div>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="https://samsidparty.com/index.html">Home</a></li>
+                <li class="list-inline-item"><a href="https://samsidparty.com/Games/index.html">Games</a></li>
+                <li class="list-inline-item"><a href="https://samsidparty.com/privacypolicy.html">Privacy Policy</a></li>
+            </ul>
+            <p class="copyright">MagicPredict, Created By SamarthCat From SamsidParty</p>
+            <p class="copyright">Copyright © SamsidParty, All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <script>
+
+        var mobile = false;
+        var initTime = Date.now();
+
+        const result = `
+        
+            <a class="searchresult" href="/app/APPID" data-aos="zoom-out" style="transition: 0.3s; width: 250px; height: 150px; margin: auto; margin-top: 50px; background-color: var(--overlaycolor);">
+                <img src="ICON" width="250px" style="margin-bottom: 0px;">
+                <div style="height: 56.25px; display: flex; padding: 0px; margin-top: -4px;">
+                    <p style="transition: 0.3s; margin: auto; text-align: center;">GAMENAME</p>
+                </div>
+
+            </a>
+
+        `
+
+
+        function init(){
+            if (window.innerWidth <= 1000){
+                mobile = true;
+            }
+
+            search();
+        }
+
+        function getAppData(id){
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/info/" + id, false);
+            xhttp.send();
+            return JSON.parse(xhttp.responseText)
+        }
+
+        function search(){
+            var urlParams = new URLSearchParams(window.location.search);
+            var query = urlParams.get("query");
+            document.getElementById("searchinput").value = query;
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/searchapi/" + query, false);
+            xhttp.send();
+            var response = JSON.parse(xhttp.responseText)
+
+            document.getElementById("searchtime").innerHTML = response.length + " RESULTS FOUND (" + ((Date.now() - initTime) / 1000).toString() + " SECONDS)"
+
+            for (var i = 0; i < response.length; i++){
+                var template = result;
+                template = template.replace("GAMENAME", response[i]["gameName"])
+                template = template.replace("APPID", response[i]["appID"])
+                template = template.replace("ICON", response[i]["headerImage"])
+
+                $(".resultcontainer").append(template);
+            }
+        }
+
+        $(document).ready(function(){
+            init();
+        });
+
+
+
+    </script>
+
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script type="text/javascript" src="/static/fit-text.js"></script>
+    <script type="text/javascript" src="/static/global.js"></script>
+
+    <div class="trans" hide="no" dir="right" style="background-color: black;"></div>
+</body>
+</html>

@@ -1,0 +1,403 @@
+@font-face {
+    font-family: 'FuturaBT-Medium';
+    src: url('https://cdn.jsdelivr.net/npm/futura-font@1.0.0/FuturaBT-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    display: flex;
+    margin: 0;
+    flex-direction: column;
+    background-color: var(--bgcolor);
+    overflow-x: hidden;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+.mid{
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    margin: auto;
+}
+
+h1, h2, p, a {
+    text-align: center;
+    font-family: "FuturaBT-Medium";
+    color: var(--txtcolor);
+    text-decoration: none;
+}
+
+h1 {
+    margin-top: 75px;
+    margin-bottom: 0;
+}
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 150px;
+    background-color: var(--overlaycolor);
+}
+
+.infobar {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    height: 150px;
+    width: 100%;
+    background-color: var(--overlaycolor);
+}
+
+.notifybar {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 150px;
+    background-color: var(--overlaycolor);
+    margin-top: 75px;
+}
+
+.searchbar {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 50px;
+    margin-top: 75px;
+    background-color: var(--overlaycolor);
+}
+
+.searchresult:hover {
+    transition: 0.3s;
+    background-color: var(--txtcolor) !important;
+}
+
+.searchresult:hover p {
+    transition: 0.3s;
+    color: var(--bgcolor) !important;
+}
+
+
+.toastnotify {
+    transition: 0.3s;
+    opacity: 1;
+    z-index: 99998;
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    width: 400px;
+    height: 150px;
+    background-color: var(--txtcolor);
+    margin-top: 75px;
+}
+
+.toastnotify[hide="yes"]{
+    transition: 0.3s;
+    opacity: 0;
+    transform: translateX(-400px);
+}
+
+.trans {
+    transition: 0.3s;
+    transition-timing-function: ease-out;
+    z-index: 99999;
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 100%;
+    background-color: black;
+}
+
+.trans[hide="yes"]{
+    transition: 0.3s;
+    margin-right: 0;
+    right: 0;
+    transition-timing-function: ease-out;
+    width: 0vw;
+}
+
+.trans[dir="left"]{
+    margin-right: auto;
+    right: auto;
+    left: 0;
+    margin-left: 0;
+}
+
+.accent {
+    width: 30px;
+    height: 100%;
+    background-color: var(--themecolor);
+}
+
+.yo {
+    height: 100%;
+    width: 150px;
+    display: flex;
+}
+
+.yo h1 {
+    font-size: 60px;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    margin: auto;
+}
+
+.notifytext {
+    width: calc(100% - 180px);
+    padding-right: 10px;
+    height: 100%;
+    display: flex;
+    float: right;
+}
+
+.notifytext p {
+    text-align: center;
+    margin: auto;
+}
+
+.carousel{
+    margin-top: 75px;
+    display:block;
+}
+
+.carousel a {
+    text-decoration: none;
+}
+
+.chart {
+    margin-top: 75px;
+}
+
+.slick-prev, .slick-next {
+    transition: 0.3s;
+    top: calc(50% - 125px);
+    left: -50px;
+    position: absolute;
+    display: flex;
+    width: 50px;
+    height: 100px;
+    color: transparent;
+    border: none;
+    background: transparent;
+    background-image: url("/static/arrow.png");
+    transform: scaleX(-1);
+    background-size: cover;
+}
+
+.slick-prev:hover, .slick-next:hover {
+    transition: 0.3s;
+    filter: invert(100%);
+}
+
+.slick-next{
+    transform: scaleX(1);
+    left: auto;
+    right: -50px;
+    float: right;
+}
+
+/*Inputs*/
+.btninput {
+    transition: 0.3s;
+    margin: auto;
+    border: none;
+    background-color: var(--overlaycolor);
+    color: var(--txtcolor);
+    font-family: "FuturaBT-Medium";
+    width: 150px;
+    height: 50px;
+}
+
+.btninput:hover{
+    transition: 0.3s;
+    color: var(--txtcolor);
+    background-color: var(--bgcolor);
+    filter: invert(100%);
+}
+
+.txtinput {
+    transition: 0.3s;
+    margin: auto;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    background-color: var(--overlaycolor);
+    color: var(--txtcolor);
+    font-family: "FuturaBT-Medium";
+    padding: 10px;
+    width: 150px;
+    height: 50px;
+}
+
+.txtinput:hover{
+    transition: 0.3s;
+    color: var(--txtcolor);
+    background-color: var(--bgcolor);
+    filter: invert(100%);
+}
+
+/* Tablet Layout*/
+@media only screen and (max-width: 1500px) {
+
+    .resultcontainer {
+        grid-template-columns: auto auto !important;
+    }
+}
+
+
+/* Mobile Layout */
+@media only screen and (max-width: 1000px) {
+    .mid {
+      width: 70vw;
+    }
+
+    .desktop-only {
+        display: none;
+        width: 0px;
+    }
+
+    .center-on-mobile {
+        text-align: center !important;
+        margin: auto !important;
+    }
+
+    .notifytext {
+        width: calc(100% - 30px);
+    }
+
+    .toastnotify {
+        margin-top: 0;
+        width: 100%;
+    }
+
+    .toastnotify[hide="yes"]{
+        transform: translateX(0px);
+        transform: translateY(-150px);
+    }
+
+    .resultcontainer {
+        grid-template-columns: auto !important;
+    }
+
+    .searchresult {
+        margin: auto !important;
+        margin-top: 50px !important;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*FOOTER*/
+
+.icon{
+    width: 30px;
+    margin: auto;
+    justify-self: center;
+    align-self: center;
+    vertical-align: middle;
+    
+}
+
+.footer-basic {
+margin-top: 100px;
+padding:40px 0;
+background-color:var(--overlaycolor);
+color:var(--txtcolor);
+}
+
+.footer-basic ul {
+padding:0;
+list-style:none;
+text-align:center;
+font-size:18px;
+line-height:1.6;
+margin-bottom:0;
+}
+
+.footer-basic li {
+padding:0 10px;
+}
+
+.footer-basic ul a {
+color:inherit;
+text-decoration:none;
+opacity:0.8;
+}
+
+.footer-basic ul a:hover {
+opacity:1;
+}
+
+.footer-basic .social {
+text-align:center;
+padding-bottom:25px;
+}
+
+.footer-basic .social > a {
+display: flex;
+font-size:24px;
+width:40px;
+height:40px;
+line-height:35px;
+display:inline-block;
+text-align:center;
+border-radius:50%;
+border:1px solid var(--txtcolor);
+margin:0 8px;
+color:inherit;
+background: black;
+opacity:0.75;
+}
+
+.footer-basic .social > a:hover {
+opacity:0.9;
+}
+
+.footer-basic .copyright {
+margin-top:15px;
+text-align:center;
+font-size:13px;
+color:var(--txtcolor);
+margin-bottom:0;
+}
+
+/*Priorities*/
+.firstboot {
+    display: none;
+}

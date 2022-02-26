@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/favicon.png">
+    <meta property="og:title" content="%%APPNAME%% On MagicPredict" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="%%REQUESTURL%%" />
+    <meta property="og:description" content="View advanced analytics and predictions for %%APPNAME%% on MagicPredict! (%%APPID%%)" />
+    <meta property="og:image" content="https://cdn.akamai.steamstatic.com/steam/apps/%%APPID%%/capsule_616x353.jpg" />
+    <title>%%APPNAME%% - MagicPredict (%%APPID%%)</title>
+</head>
+<body style="background-color: black;" class="appBody">
+    <div class="navbar">
+        <button class="btninput desktop-only" onclick="redirect('%%REFERER%%')" style="position: absolute; height: 150px; width: 170px;"><img src="/static/back.png" style="width: 100px; position: absolute; top: 45px; left: 30px; mix-blend-mode: difference;"></button>
+        <img src="/static/logo.png" style="width: 250px; margin: auto;">
+    </div>
+
+    <div class="mid">
+        <div class="notifybar youngwarn" id="youngwarn" style="display: none;" data-aos="zoom-out">
+            <div class="accent"></div>
+            <div class="yo desktop-only"><h1>YO!</h1></div>
+            <div class="notifytext"><p>This game is either too new, unreleased, or it is a DLC. These types of games are not supported for predictions because their data is too vague for ARIMA to process.</p></div>
+        </div>
+
+        <div id="theme-notify" style="display: none;" data-aos="zoom-out">
+            <div class="notifybar">
+                <div class="accent"></div>
+                <div class="yo desktop-only" style="height: 225px;"><h1>YO!</h1></div>
+                <div class="notifytext" id="themetext"><p>The system has detected that your device is using the THEME theme, you can change it to -THEME if you want.</p></div>
+            </div>
+            <div class="notifybar" style="margin-top: 0px; height: 75px;">
+                <div class="accent"></div>
+                <div class="yo desktop-only"><h1></h1></div>
+                <div class="notifytext"><button class="btninput" style="margin-bottom: 70px;" onclick="switchTheme()">Switch Theme</button></div>
+            </div>
+        </div>
+
+        <h1 data-aos="zoom-out" id="searchtime">%%APPNAME%%</h1>
+
+        <img style="width: 100%; margin-top: 75px;" src="https://cdn.cloudflare.steamstatic.com/steam/apps/%%APPID%%/capsule_616x353.jpg">
+
+        <h1 data-aos="zoom-out" id="loading">Making Predictions... This can take around 10 seconds</h1>
+
+        <canvas data-aos="zoom-out" id="data" class="chart" style="width: 100%; height: 500px;"></canvas>
+
+        <br><br><br>
+        <br><br><br>
+        <br><br><br>
+        <br><br><br>
+        <br><br><br>
+
+    <div class="resultcontainer" style="width: 100%; display: grid; grid-template-columns: auto auto auto; margin-top: 75px;">
+        
+    </div>
+
+    </div>
+
+    <br><br><br>
+    <br><br><br>
+
+    <div class="footer-basic">
+        <footer>
+            <img src="/static/PartyWordmarkIcon.png" style="width: 300px; margin: auto; display: flex;">
+            <br>
+            <div class="social"><a href="https://samsidparty.com/redirect.html?link=Https://discord.com/invite/9pquRQPsFD"><img class="icon" src="https://samsidparty.com/Discord.png"></img></a><a href="https://samsidparty.com/redirect.html?link=https://www.youtube.com/channel/UCwQqQAKagWr2LSOLmlZFMUg?sub_confirmation=1"><img class="icon" src="https://samsidparty.com/Youtube.png"></img></a><a href="https://samsidparty.com/redirect.html?link=Https://github.com/SamarthCat"><img class="icon" src="https://samsidparty.com/Github.png"></img></a></div>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="https://samsidparty.com/index.html">Home</a></li>
+                <li class="list-inline-item"><a href="https://samsidparty.com/Games/index.html">Games</a></li>
+                <li class="list-inline-item"><a href="https://samsidparty.com/privacypolicy.html">Privacy Policy</a></li>
+            </ul>
+            <p class="copyright">MagicPredict, Created By SamarthCat From SamsidParty</p>
+            <p class="copyright">Copyright © SamsidParty, All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <script>
+
+        const applicationData = `%%APPDATA%%`;
+
+        var mobile = false;
+
+
+        function init(){
+            if (window.innerWidth <= 1000){
+                mobile = true;
+            }
+
+            document.body.style.backgroundImage = 'url("https://cdn.akamai.steamstatic.com/steam/apps/%%APPID%%/page_bg_generated_v6b.jpg")'
+
+            var URL = "https://steamcharts.com/app/%%APPID%%/chart-data.json";
+
+            fetch("/req", {
+                method: 'GET',
+                headers: {
+                    'requrl': URL,
+                    'vhost': "https://steamcharts.com",
+                    'vref': "https://steamcharts.com"
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+
+            fetch("/playdata/%%APPID%%").then((r) => {
+                r.text().then((txt) => {
+                    document.getElementById("loading").style.display = "none";
+                    if (txt.includes("young")){
+                        document.getElementById("youngwarn").style.display = "flex";
+                    }
+                    else{
+
+                        var json = JSON.parse(txt);
+                        var properdata = json["data"];
+                        var properdataArr = [];
+
+                        for (var i = 0; i < properdata.length; i++){
+                            properdataArr.push(properdata[i][0]);
+                        }
+
+                        var rawLabels = json["index"];
+                        var labels = [];
+
+                        const monthNames = ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"
+                        ];
+
+                        for (var i = 0; i < rawLabels.length; i++){
+                            var split = rawLabels[i].split("-");
+                            var month = monthNames[(parseInt(split[1]) - 1)]
+                            labels.push(month + " " + split[0]);
+                        }
+
+                        var data = {
+                        labels: labels,
+                            datasets: [{
+                                label: '%%APPNAME%% Players In The Future',
+                                data: properdataArr,
+                                fill: false,
+                                borderColor: 'rgb(75, 192, 192)',
+                                tension: 0.1
+                            }]
+                        };
+
+                        var config = {
+                            type: 'line',
+                            data: data,
+                        };
+
+                        var lineChart = new Chart(
+                            document.getElementById('data'),
+                            config
+                        );
+                    }
+                })
+            })
+        }
+
+
+        $(document).ready(function(){
+            init();
+        });
+
+
+
+    </script>
+
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script type="text/javascript" src="/static/fit-text.js"></script>
+    <script type="text/javascript" src="/static/global.js"></script>
+
+    <div class="trans" hide="no" dir="right" style="background-color: black;"></div>
+</body>
+</html>
