@@ -55,9 +55,6 @@ def rebuildCache():
 
 def getFeatured():
 
-    # TODO: Change to use API insead of webscraper
-    # https://store.steampowered.com/search/results/?query&start=0&count=50&dynamic_data=&sort_by=_ASC&os=win&filter=topsellers&infinite=1
-    # This is because steam messes up on sales
     """
     URL = "https://store.steampowered.com"
     session = HTMLSession()
@@ -98,7 +95,8 @@ def getFeatured():
     itemobjects = []
 
     for i in range(10):
-        itemobjects.append(games[i].attrs["data-ds-appid"])
+        if (not "," in games[i].attrs["data-ds-appid"]):
+            itemobjects.append(games[i].attrs["data-ds-appid"])
 
     r.close
 
@@ -271,7 +269,7 @@ def getGameData(id):
         data = {
             "appID" : id,
             "gameName" : soup.select("title")[0].text.split(" - SteamSpy - All the data and stats about Steam games")[0],
-            "shortDescription" : soup.select(".col-md-4 p")[0].text.split("Store\n| Hub\n| SteamDB")[0],
+            "shortDescription" : soup.select(".col-md-4 p")[0].text.split("Store\n                  | Hub\n                  | SteamDB")[0],
             "headerImage" : "https://steamcdn-a.akamaihd.net/steam/apps/" + id + "/header.jpg"
         }
     except:
