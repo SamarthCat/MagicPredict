@@ -8,3 +8,10 @@ Note: This only works on games that are at least 32 months old because the ARIMA
 ![image](https://user-images.githubusercontent.com/79756986/156199660-044035b4-efd0-486b-b4fb-a7580fb91978.png)
 ![image](https://user-images.githubusercontent.com/79756986/156200474-be54cbe2-934e-42b4-80ed-b5fab5d3c0b1.png)
 
+# Manual
+
+- To search, type something into the search box near the top
+- Click on a search result to view it.
+- Click on any of the featured games to view it
+- Games newer than 32 months old will not work
+- It should take a few seconds to generate, but when it does, it will show you the future predictions
